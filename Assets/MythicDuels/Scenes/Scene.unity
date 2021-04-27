@@ -3756,9 +3756,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 597778225}
+      - m_Target: {fileID: 597778226}
         m_TargetAssemblyTypeName: PlayFabLogin, Mirror.Examples
-        m_MethodName: 
+        m_MethodName: CreateAccount
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

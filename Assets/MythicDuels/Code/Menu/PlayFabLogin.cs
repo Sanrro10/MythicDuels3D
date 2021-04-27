@@ -60,8 +60,8 @@ public class PlayFabLogin : MonoBehaviour
             repeatPasswordText.SetText("Repeat password");
             repeatPasswordInputField.ActivateInputField();
             repeatPasswordInputField.gameObject.SetActive(true);
-            signInButton.transform.position = new Vector3(signInButton.transform.position.x, -238, signInButton.transform.position.z);
-            createAccountButton.transform.position = new Vector3(signInButton.transform.position.x, -238, signInButton.transform.position.z);
+            signInButton.transform.localPosition = new Vector3(signInButton.transform.localPosition.x, - 238, signInButton.transform.localPosition.z);
+            createAccountButton.transform.localPosition = new Vector3(createAccountButton.transform.localPosition.x, -238, createAccountButton.transform.localPosition.z);
 
         }
 
@@ -84,6 +84,7 @@ public class PlayFabLogin : MonoBehaviour
             }, error =>
             {
                 Debug.LogError(error.GenerateErrorReport());
+                errorText.text = error.GenerateErrorReport();
             });
         }
         else
@@ -92,8 +93,8 @@ public class PlayFabLogin : MonoBehaviour
             repeatPasswordText.SetText("");
             repeatPasswordInputField.DeactivateInputField();
             repeatPasswordInputField.gameObject.SetActive(false);
-            signInButton.transform.position = new Vector3(signInButton.transform.position.x, -138, signInButton.transform.position.z);
-            createAccountButton.transform.position = new Vector3(signInButton.transform.position.x, -138, signInButton.transform.position.z);
+            signInButton.transform.localPosition = new Vector3(signInButton.transform.localPosition.x, -138, signInButton.transform.localPosition.z);
+            createAccountButton.transform.localPosition = new Vector3(createAccountButton.transform.localPosition.x, -138, createAccountButton.transform.localPosition.z);
 
         }
 
