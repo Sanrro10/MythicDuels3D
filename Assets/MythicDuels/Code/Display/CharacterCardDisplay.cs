@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class CharacterCardDisplay : CardDisplay
 {
-    private CharacterCard characterCard;
+    public CharacterCard characterCard;
 
     // Si marcas las variables con el atributo SerializeField,
     // puedes establecerlas en el inspector si necesidad de hacerlas públicas
@@ -22,7 +22,19 @@ public class CharacterCardDisplay : CardDisplay
     private Text wisdomValue;
     [SerializeField]
     private Text charismaValue;
+    [SerializeField]
+    private Text armorClassValue;
+    [SerializeField]
+    private Text isRangedValue;
+    [SerializeField]
+    private MinionDisplay minionDisplayOriginal;
 
+    private MinionFactory<MinionDisplay> minionFactory;
+
+    private void Awake()
+    {
+        minionFactory = new MinionFactory<MinionDisplay>(minionDisplayOriginal);
+    }
     // Los objetos repetidos mejor tratarlos como arrays, esto evita duplicar código
     // y es mas tolerante a cambios (más fácil tener menos o más abilidades2).
     // He hecho que los slots sean prefabs.
@@ -32,7 +44,6 @@ public class CharacterCardDisplay : CardDisplay
     // Use this for initialization
     public void SetCharacter(CharacterCard card)
     {
-        // Lo que está en la clase base Card, debería hacerse, a su vez, en una clase base de Display (CardDisplay)
 
         SetCard(card);
 
@@ -44,6 +55,15 @@ public class CharacterCardDisplay : CardDisplay
         intelligenceValue.text = GetValue(characterCard.intelligence);
         wisdomValue.text = GetValue(characterCard.wisdom);
         charismaValue.text = GetValue(characterCard.charisma);
+        armorClassValue.text = characterCard.armorClass.ToString();
+        if (characterCard.range > 1)
+        {
+            isRangedValue.text = "Ranged(" + characterCard.range + ")";
+        }
+        else
+        {
+            isRangedValue.text = "Melee";
+        }
 
         for (int i = 0; i < abilities.Length; i++)
         {
@@ -57,29 +77,15 @@ public class CharacterCardDisplay : CardDisplay
                 abilities[i].gameObject.SetActive(false);
             }
         }
+    }
 
-        //slot1Name.text = characterCard.slot1.name;
-        //slot1CastingTime.text = characterCard.slot1.castingtime;
-        //slot1Type.text = characterCard.slot1.type;
-        //slot1Level.text = characterCard.slot1.level.ToString();
-        //slot2Name.text = characterCard.slot2.name;
-        //slot2CastingTime.text = characterCard.slot2.castingtime;
-        //slot2Type.text = characterCard.slot2.type;
-        //slot2Level.text = characterCard.slot2.level.ToString();
-        //slot3Name.text = characterCard.slot3.name;
-        //slot3CastingTime.text = characterCard.slot3.castingtime;
-        //slot3Type.text = characterCard.slot3.type;
-        //slot3Level.text = characterCard.slot3.level.ToString();
-        //slot4Name.text = characterCard.slot4.name;
-        //slot4CastingTime.text = characterCard.slot4.castingtime;
-        //slot4Type.text = characterCard.slot4.type;
-        //slot4Level.text = characterCard.slot4.level.ToString();
+    public void Play()
+    {
+        var cardDisplay = minionFactory.Get(Vector3.zero, Quaternion.identity, this);
     }
 
     string GetValue(int value)
     {
-        // Esto mejor sacarlo con una fórmula, no?
-        // bonificador = Mathf.Floor(value / 2) - 5
 
         int bonus = Mathf.FloorToInt(value / 2) - 5;
 

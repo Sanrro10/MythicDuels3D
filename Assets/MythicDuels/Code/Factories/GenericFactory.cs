@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GenericFactory<T> /*: MonoBehaviour */ where T : MonoBehaviour
+public class GenericFactory<T> where T : MonoBehaviour
 {
     private T original;
 

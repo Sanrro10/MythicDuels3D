@@ -19,6 +19,7 @@ public class CardDisplay : MonoBehaviour {
 
 	public Quaternion handRotation;
 
+
 	//public Text manaText;
 	//public Text attackText;
 	//public Text healthText;
@@ -33,7 +34,7 @@ public class CardDisplay : MonoBehaviour {
 
 	}
 
-    public static implicit operator CardDisplay(GameObject v)
+	public static implicit operator CardDisplay(GameObject v)
     {
         throw new NotImplementedException();
     }

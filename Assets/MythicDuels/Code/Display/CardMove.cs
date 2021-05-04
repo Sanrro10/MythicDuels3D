@@ -53,6 +53,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         {
             transform.position = new Vector3(hitInfo.transform.position.x, hitInfo.transform.position.y+(float)0.2, hitInfo.transform.position.z);
             transform.rotation = Quaternion.identity;
+            card.play();
         }
         else
         {
