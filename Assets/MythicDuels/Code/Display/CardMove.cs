@@ -24,7 +24,12 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 
     private bool isDragging;
     private bool isEnabled = true;
+    private CardDisplay card;
 
+    private void Start()
+    {
+        card = this.gameObject;
+    }
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (!isEnabled)
@@ -41,8 +46,21 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
             return;
         }
         isDragging = false;
+        Ray ray = Camera.main.ScreenPointToRay(eventData.position);
 
-        // Comprobar si se ha soltado sobre algo
+        Debug.DrawRay(ray.origin, ray.direction, Color.red);
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, float.MaxValue, LayerMask.GetMask("Player Zone")))
+        {
+            transform.position = new Vector3(hitInfo.transform.position.x, hitInfo.transform.position.y+(float)0.2, hitInfo.transform.position.z);
+            transform.rotation = Quaternion.identity;
+        }
+        else
+        {
+            transform.position = card.handPosition;
+            transform.rotation = card.handRotation;
+
+        }
+
 
     }
     public void OnDrag(PointerEventData eventData)

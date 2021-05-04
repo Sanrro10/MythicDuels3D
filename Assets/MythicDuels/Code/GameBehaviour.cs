@@ -40,6 +40,7 @@ public class GameBehaviour : MonoBehaviour
     private void Awake()
     {
         characterCardFactory = new CharacterCardFactory(characterCardDisplayOriginal);
+        StartGame();
     }
 
 

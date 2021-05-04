@@ -21,6 +21,8 @@ public class HandDisplay : MonoBehaviour
 
             card.transform.position = transform.position + transform.right * positionOffset;
             card.transform.rotation = transform.rotation;
+            card.handPosition = card.transform.position;
+            card.handRotation = card.transform.rotation;
         }
     }
 }
