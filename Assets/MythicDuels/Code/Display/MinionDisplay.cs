@@ -15,25 +15,28 @@ public class MinionDisplay : MonoBehaviour
     [SerializeField]
     private Text attackText;
     [SerializeField]
-    private Text spellsText;
+    private Text manaText;
     [SerializeField]
     private Text rangeText;
     [SerializeField]
     private Text attackType;
+    [SerializeField]
+    private Text classText;
     private bool isStrengh;
     private bool hasReaction;
     private int range;
     private int armorClass;
     private int health;
     private int attack;
-    private int spells;
-    private 
+    private int mana;
+    private int clasS;
 
 
 
     // Use this for initialization
     public void SetMinion(CharacterCardDisplay card)
     {
+        characterCardDisplay = card;
         health = card.characterCard.constitution * card.characterCard.level;
         healthText.text = health.ToString();
         hasReaction = true;
@@ -45,7 +48,7 @@ public class MinionDisplay : MonoBehaviour
             attackType.text = "DEX";
             if(range == 1)
             {
-                attack = (4 + card.characterCard.dexterity) * card.characterCard.level/2;
+                attack = (int)((4 + card.characterCard.dexterity) * card.characterCard.level*0.8);
             }
             else
             {
@@ -53,9 +56,33 @@ public class MinionDisplay : MonoBehaviour
             }
             
         }
+        classText.text = card.classText.text;
+        clasS = card.characterCard.clasS;
+        if (clasS == 0 | clasS == 4 | clasS == 5 | clasS == 8) //Clases sin maná
+        {
+            mana = card.characterCard.level * 0;
+        }
+        else
+        {
+            if (clasS == 7) //Mana de Ranger
+            {
+                mana = card.characterCard.level * 2;
+            }
+            else
+            {
+                if (clasS == 10) //mana de wizard
+                {
+                    mana = card.characterCard.level * 4;
+                }
+                else //clases con bastante maná pero no como wizard
+                {
+                    mana = card.characterCard.level * 3;
+                }
+            }
+        }
         attackText.text = attack.ToString();
-        spells = minion.spells;
-        spellsText.text = spells.ToString();
+        
+        manaText.text = mana.ToString();
 
         
     }

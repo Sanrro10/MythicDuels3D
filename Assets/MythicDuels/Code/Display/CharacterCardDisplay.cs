@@ -27,6 +27,7 @@ public class CharacterCardDisplay : CardDisplay
     [SerializeField]
     private Text isRangedValue;
     [SerializeField]
+    public Text classText;
     private MinionDisplay minionDisplayOriginal;
 
     private MinionFactory<MinionDisplay> minionFactory;
@@ -64,6 +65,84 @@ public class CharacterCardDisplay : CardDisplay
         {
             isRangedValue.text = "Melee";
         }
+        if (characterCard.clasS == 0)
+        {
+            classText.text = "Barbarian";
+        }
+        else
+        {
+            if (characterCard.clasS == 1)
+            {
+                classText.text = "Bard";
+            }
+            else
+            {
+                if (characterCard.clasS == 2)
+                {
+                    classText.text = "Cleric";
+                }
+                else
+                {
+                    if (characterCard.clasS == 3)
+                    {
+                        classText.text = "Druid";
+                    }
+                    else
+                    {
+                        if (characterCard.clasS == 4)
+                        {
+                            classText.text = "Fighter";
+                        }
+                        else
+                        {
+                            if (characterCard.clasS == 5)
+                            {
+                                classText.text = "Monk";
+                            }
+                            else
+                            {
+                                if (characterCard.clasS == 6)
+                                {
+                                    classText.text = "Paladin";
+                                }
+                                else
+                                {
+                                    if (characterCard.clasS == 7)
+                                    {
+                                        classText.text = "Ranger";
+                                    }
+                                    else
+                                    {
+                                        if (characterCard.clasS == 8)
+                                        {
+                                            classText.text = "Rogue";
+                                        }
+                                        else
+                                        {
+                                            if (characterCard.clasS == 9)
+                                            {
+                                                classText.text = "Sorcerer";
+                                            }
+                                            else
+                                            {
+                                                if (characterCard.clasS == 10)
+                                                {
+                                                    classText.text = "Warlock";
+                                                }
+                                                else {
+                                                    classText.text = "Wizard";
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
 
         for (int i = 0; i < abilities.Length; i++)
         {
@@ -82,6 +161,7 @@ public class CharacterCardDisplay : CardDisplay
     public void Play()
     {
         var cardDisplay = minionFactory.Get(Vector3.zero, Quaternion.identity, this);
+
     }
 
     string GetValue(int value)

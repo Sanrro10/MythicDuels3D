@@ -13,6 +13,7 @@ public class CharacterCard : Card
 	public int charisma;
 	public int armorClass;
 	public int range;
+	public int clasS;
 
 	public Ability[] abilities;
 

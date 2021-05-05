@@ -33,6 +33,8 @@ public class CardDisplay : MonoBehaviour {
 		levelText.text = card.level.ToString();
 
 	}
+	public void play() { 
+	}
 
 	public static implicit operator CardDisplay(GameObject v)
     {

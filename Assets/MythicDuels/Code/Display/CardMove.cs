@@ -24,11 +24,11 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 
     private bool isDragging;
     private bool isEnabled = true;
-    private CardDisplay card;
+    //private CardDisplay card;
 
     private void Start()
     {
-        card = this.gameObject;
+        //card = this.gameObject;
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -53,12 +53,12 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         {
             transform.position = new Vector3(hitInfo.transform.position.x, hitInfo.transform.position.y+(float)0.2, hitInfo.transform.position.z);
             transform.rotation = Quaternion.identity;
-            card.play();
+            //card.play();
         }
         else
         {
-            transform.position = card.handPosition;
-            transform.rotation = card.handRotation;
+            //transform.position = card.handPosition;
+            //transform.rotation = card.handRotation;
 
         }
 
