@@ -12,8 +12,7 @@ public class CharacterCard : Card
 	public int wisdom;
 	public int charisma;
 	public int armorClass;
-	public int range;
-	public int clasS;
+	public Weapon weapon;
 
 	public Ability[] abilities;
 

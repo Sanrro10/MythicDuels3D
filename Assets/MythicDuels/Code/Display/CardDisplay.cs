@@ -15,10 +15,11 @@ public class CardDisplay : MonoBehaviour {
 	[SerializeField]
 	private Image artworkImage;
 
-	public Vector3 handPosition;
+	[SerializeField]
+	public Image background;
 
-	public Quaternion handRotation;
-
+	[SerializeField]
+	private Sprite[] spriteArray;
 
 	//public Text manaText;
 	//public Text attackText;
@@ -31,6 +32,7 @@ public class CardDisplay : MonoBehaviour {
 		nameText.text = card.name;
 		artworkImage.sprite = card.artwork;
 		levelText.text = card.level.ToString();
+		background.sprite = spriteArray[card.clasS];
 
 	}
 	public void play() { 

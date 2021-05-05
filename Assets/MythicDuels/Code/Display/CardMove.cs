@@ -25,6 +25,8 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     private bool isDragging;
     private bool isEnabled = true;
     //private CardDisplay card;
+    private Vector3 position;
+    private Quaternion rotation;
 
     private void Start()
     {
@@ -36,6 +38,8 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         {
             return;
         }
+        position = transform.position;
+        rotation = transform.rotation;
         isDragging = true;
     }
 
@@ -57,8 +61,8 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         }
         else
         {
-            //transform.position = card.handPosition;
-            //transform.rotation = card.handRotation;
+            transform.position = position;
+            transform.rotation = rotation;
 
         }
 

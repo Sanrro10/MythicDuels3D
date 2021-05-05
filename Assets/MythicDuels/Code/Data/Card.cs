@@ -10,5 +10,5 @@ public class Card : ScriptableObject {
 
 	public int level;
 
-
+	public int clasS;
 }

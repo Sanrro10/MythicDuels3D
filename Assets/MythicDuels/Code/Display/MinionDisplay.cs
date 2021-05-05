@@ -17,11 +17,9 @@ public class MinionDisplay : MonoBehaviour
     [SerializeField]
     private Text manaText;
     [SerializeField]
-    private Text rangeText;
+    private Text armorClassText;
     [SerializeField]
-    private Text attackType;
-    [SerializeField]
-    private Text classText;
+    public SpriteRenderer weapon;
     private bool isStrengh;
     private bool hasReaction;
     private int range;
@@ -40,12 +38,12 @@ public class MinionDisplay : MonoBehaviour
         health = card.characterCard.constitution * card.characterCard.level;
         healthText.text = health.ToString();
         hasReaction = true;
-        range = card.characterCard.range;
-        rangeText.text = range.ToString();
+        //range = card.characterCard.range;
+        //rangeText.text = range.ToString();
         if(card.characterCard.dexterity + 2 > card.characterCard.strength)
         {
             isStrengh = false;
-            attackType.text = "DEX";
+            //attackType.text = "DEX";
             if(range == 1)
             {
                 attack = (int)((4 + card.characterCard.dexterity) * card.characterCard.level*0.8);
@@ -56,7 +54,7 @@ public class MinionDisplay : MonoBehaviour
             }
             
         }
-        classText.text = card.classText.text;
+        //classText.text = card.classText.text;
         clasS = card.characterCard.clasS;
         if (clasS == 0 | clasS == 4 | clasS == 5 | clasS == 8) //Clases sin maná
         {
