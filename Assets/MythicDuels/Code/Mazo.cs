@@ -4,17 +4,11 @@ using UnityEngine;
 
 public class Mazo : ScriptableObject {
 
-	List<Ability> habilityCards = new List<Ability>(30);
-	List<CharacterCard_old> characterCards = new List<CharacterCard_old>(4);
+	List<Card> mazo = new List<Card>(30);
 
-	public List<Ability> getHabilityCards()
+	public List<Card> getDeck()
     {
-		return habilityCards;
+		return mazo;
     }
-
-	public List<CharacterCard_old> getCharacterCards()
-	{
-		return characterCards;
-	}
 
 }

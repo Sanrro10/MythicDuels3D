@@ -3,17 +3,19 @@ using UnityEngine;
 using PlayFab;
 using PlayFab.MultiplayerModels;
 using TMPro;
+using Mirror;
 
 public class Matchmaker : MonoBehaviour
 {
     [SerializeField] private GameObject playButton;
     [SerializeField] private GameObject leaveQueueButton;
     [SerializeField] private TMP_Text queueStatusText;
+    [SerializeField] private NetworkManager networkManager;
 
     private string ticketId;
     private Coroutine pollTicketCoroutine;
 
-    private static string QueueName = "DefaultQueue";
+    private static string QueueName = "Normal";
 
     public void StartMatchmaking()
     {
@@ -95,7 +97,7 @@ public class Matchmaker : MonoBehaviour
                 OnMatchmakingError
             );
 
-            yield return new WaitForSeconds(6);
+            yield return new WaitForSeconds(1);
         }
     }
 
@@ -136,5 +138,6 @@ public class Matchmaker : MonoBehaviour
     private void OnGetMatch(GetMatchResult result)
     {
         queueStatusText.text = $"{result.Members[0].Entity.Id} vs {result.Members[1].Entity.Id}";
+        networkManager.networkAddress = result.ServerDetails.IPV4Address;
     }
 }

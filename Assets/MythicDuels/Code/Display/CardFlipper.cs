@@ -11,6 +11,7 @@ public class CardFlipper : MonoBehaviour
 
     public void Flip()
     {
+        Debug.Log("Se ha lanzado el Flip");
         iTween.RotateTo(this.gameObject, iTween.Hash("z", 180, "time", 1.5f, "easetype", easeType, "looptype", loopType));
     }
 }

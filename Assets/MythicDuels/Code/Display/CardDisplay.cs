@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Mirror;
 
-public class CardDisplay : MonoBehaviour {
+public class CardDisplay : NetworkBehaviour {
 
 	[SerializeField]
 	private Text nameText;

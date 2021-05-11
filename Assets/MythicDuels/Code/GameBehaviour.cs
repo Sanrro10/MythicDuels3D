@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class GameBehaviour : MonoBehaviour
+public class GameBehaviour : NetworkBehaviour
 {
     //public Mazo mazo;
 
