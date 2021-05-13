@@ -184,8 +184,8 @@ MonoBehaviour:
   serverTickRate: 30
   serverBatching: 1
   serverBatchInterval: 0
-  offlineScene: 
-  onlineScene: 
+  offlineScene: Assets/MythicDuels/Scenes/Login.unity
+  onlineScene: Assets/MythicDuels/Scenes/Cartas.unity
   transport: {fileID: 79646815}
   networkAddress: localhost
   maxConnections: 100
@@ -195,7 +195,11 @@ MonoBehaviour:
   playerPrefab: {fileID: 281201363304515854, guid: 21c6e7709553a7749bcd6b3a8e7ed203, type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
-  spawnPrefabs: []
+  spawnPrefabs:
+  - {fileID: 100012, guid: 6eca416f42fa4834fa88cc8e2f577380, type: 3}
+  - {fileID: 6572304105880267990, guid: e9d0c4bab918dd245b90813f448cf2c6, type: 3}
+  - {fileID: 58078372244725305, guid: 95c71e1a0ecd2754d9bf9b2f9d681652, type: 3}
+  - {fileID: 7323007588528057926, guid: dd15db690d79ac3488e6bc9e59963006, type: 3}
 --- !u!4 &79646817
 Transform:
   m_ObjectHideFlags: 0
@@ -476,6 +480,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player Zone
       objectReference: {fileID: 0}
+    - target: {fileID: 919443824203599317, guid: 95c71e1a0ecd2754d9bf9b2f9d681652, type: 3}
+      propertyPath: sceneId
+      value: 1320161611
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 95c71e1a0ecd2754d9bf9b2f9d681652, type: 3}
 --- !u!1001 &3185166081264087361
@@ -601,6 +609,10 @@ PrefabInstance:
     - target: {fileID: 7323007588528057946, guid: dd15db690d79ac3488e6bc9e59963006, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614562414023343530, guid: dd15db690d79ac3488e6bc9e59963006, type: 3}
+      propertyPath: sceneId
+      value: 599912278
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd15db690d79ac3488e6bc9e59963006, type: 3}

@@ -2665,6 +2665,7 @@ MonoBehaviour:
   playButton: {fileID: 1375302742}
   leaveQueueButton: {fileID: 2024104618}
   queueStatusText: {fileID: 1893024173}
+  networkManager: {fileID: 1886246552}
 --- !u!1 &1027206895
 GameObject:
   m_ObjectHideFlags: 0
@@ -3873,8 +3874,8 @@ MonoBehaviour:
   serverTickRate: 30
   serverBatching: 1
   serverBatchInterval: 0
-  offlineScene: 
-  onlineScene: 
+  offlineScene: Assets/MythicDuels/Scenes/Login.unity
+  onlineScene: Assets/MythicDuels/Scenes/Cartas.unity
   transport: {fileID: 1886246553}
   networkAddress: localhost
   maxConnections: 100
@@ -3884,7 +3885,12 @@ MonoBehaviour:
   playerPrefab: {fileID: 0}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
-  spawnPrefabs: []
+  spawnPrefabs:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   leftRacketSpawn: {fileID: 0}
   rightRacketSpawn: {fileID: 0}
 --- !u!114 &1886246553

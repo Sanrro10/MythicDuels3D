@@ -10,7 +10,7 @@ public class Matchmaker : MonoBehaviour
     [SerializeField] private GameObject playButton;
     [SerializeField] private GameObject leaveQueueButton;
     [SerializeField] private TMP_Text queueStatusText;
-    [SerializeField] private NetworkManager networkManager;
+    [SerializeField] NetworkManager networkManager;
 
     private string ticketId;
     private Coroutine pollTicketCoroutine;
@@ -138,6 +138,15 @@ public class Matchmaker : MonoBehaviour
     private void OnGetMatch(GetMatchResult result)
     {
         queueStatusText.text = $"{result.Members[0].Entity.Id} vs {result.Members[1].Entity.Id}";
+        Debug.Log("Ip del Servidor:" + result.ServerDetails.IPV4Address +":" + result.ServerDetails.Ports[0].Num);
+        //configure mirror network
+        var transport = Transport.activeTransport as TelepathyTransport;
+        transport.port = (ushort)result.ServerDetails.Ports[0].Num;
         networkManager.networkAddress = result.ServerDetails.IPV4Address;
+
+        Debug.Log($"Connecting to {networkManager.networkAddress}:{result.ServerDetails.Ports[0].Num}");
+        Debug.Log($"Connecting to {networkManager.networkAddress}:{result.ServerDetails.Ports[0].Num}");
+
+        networkManager.StartClient();
     }
 }
