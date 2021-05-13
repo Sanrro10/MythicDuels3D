@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/MythicDuels/Scenes/Login.unity
     guid: dcfc99c1c2e97884fbb299c13970e451
   - enabled: 1

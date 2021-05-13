@@ -30,29 +30,33 @@ public class PlayFabLogin : MonoBehaviour
     {
         if (!state)
         {
-            if (passwordInputField.text.Equals(passwordInputField.text))
+            if (usernameInputField.text.Length != 0 && emailInputField.text.Length != 0 && passwordInputField.text.Length != 0 && repeatPasswordInputField.text.Length != 0)
             {
-                PlayFabClientAPI.RegisterPlayFabUser(new RegisterPlayFabUserRequest
+                if (passwordInputField.text.Equals(repeatPasswordInputField.text))
                 {
-                    Username = usernameInputField.text,
-                    Email = emailInputField.text,
-                    Password = passwordInputField.text
-                }, result =>
+                    PlayFabClientAPI.RegisterPlayFabUser(new RegisterPlayFabUserRequest
+                    {
+                        Username = usernameInputField.text,
+                        Email = emailInputField.text,
+                        Password = passwordInputField.text
+                    }, result =>
+                    {
+                        SessionTicket = result.SessionTicket;
+                        EntityId = result.EntityToken.Entity.Id;
+                        signInDisplay.SetActive(false);
+                    }, error =>
+                    {
+                        Debug.LogError(error.GenerateErrorReport());
+                        errorText.text = error.GenerateErrorReport();
+                    });
+                    errorText.SetText("");
+                }
+                else
                 {
-                    SessionTicket = result.SessionTicket;
-                    EntityId = result.EntityToken.Entity.Id;
-                    signInDisplay.SetActive(false);
-                }, error =>
-                {
-                    Debug.LogError(error.GenerateErrorReport());
-                    errorText.text = error.GenerateErrorReport();
-                });
-                errorText.SetText("");
+                    errorText.SetText("Passwords don't match. Please retry");
+                }
             }
-            else
-            {
-                errorText.SetText("Passwords don't match. Please retry");
-            }
+            else { }
         }
         else
         {
