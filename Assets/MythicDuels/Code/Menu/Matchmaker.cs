@@ -35,7 +35,19 @@ public class Matchmaker : MonoBehaviour
                     },
                     Attributes = new MatchmakingPlayerAttributes
                     {
-                        DataObject = new { }
+                        DataObject = new {
+                            latencies = new object[]
+                            {
+                                new {
+                                    region = "NorthEurope",
+                                    latency = 100
+                                },
+                                new {
+                                    region = "EastUs",
+                                    latency = 350
+                                }
+                            }
+                        }
                     }
                 },
 
@@ -140,11 +152,10 @@ public class Matchmaker : MonoBehaviour
         queueStatusText.text = $"{result.Members[0].Entity.Id} vs {result.Members[1].Entity.Id}";
         Debug.Log("Ip del Servidor:" + result.ServerDetails.IPV4Address +":" + result.ServerDetails.Ports[0].Num);
         //configure mirror network
-        var transport = Transport.activeTransport as TelepathyTransport;
-        transport.port = (ushort)result.ServerDetails.Ports[0].Num;
+        //var transport = Transport.activeTransport as TelepathyTransport;
+        //transport.port = (ushort)result.ServerDetails.Ports[0].Num;
         networkManager.networkAddress = result.ServerDetails.IPV4Address;
 
-        Debug.Log($"Connecting to {networkManager.networkAddress}:{result.ServerDetails.Ports[0].Num}");
         Debug.Log($"Connecting to {networkManager.networkAddress}:{result.ServerDetails.Ports[0].Num}");
 
         networkManager.StartClient();

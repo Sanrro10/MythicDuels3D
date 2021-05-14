@@ -77,7 +77,7 @@ public class PlayerManager : NetworkBehaviour
                 var cardDisplay = characterCardFactory.Get(Vector3.zero, Quaternion.identity, card);
                 //CharacterCardDisplay cardDisplay = CharacterCardDisplay.Instantiate(characterCardDisplayOriginal, Vector3.zero, Quaternion.identity);
 
-                //cardDisplay.SetCharacter(card as CharacterCard);
+                cardDisplay.SetCharacter(card as CharacterCard);
 
                 NetworkServer.Spawn(cardDisplay, connectionToClient);
             /*} else { card is AbilityCard) {

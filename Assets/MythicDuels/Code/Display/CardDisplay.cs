@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
 
-public class CardDisplay : NetworkBehaviour {
+public class CardDisplay : MonoBehaviour {
 
 	[SerializeField]
 	private Text nameText;
