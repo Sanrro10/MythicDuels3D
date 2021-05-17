@@ -35,13 +35,16 @@ public class PlayerManager : NetworkBehaviour
 
     private CharacterCardFactory characterCardFactory;
 
-
-    private Player local;
-    private Player rival;
-
+    [Client]
     public override void OnStartClient()
     {
         base.OnStartClient();
+        var playerCards = BuildDecks();
+        playerCards.Shuffle();
+
+        Player player = new Player(playerHandDisplay, playerCards);
+
+        player.CmdDraw(4);
     }
 
     [Server]
@@ -49,23 +52,7 @@ public class PlayerManager : NetworkBehaviour
     {
         base.OnStartServer();
         characterCardFactory = new CharacterCardFactory(characterCardDisplayOriginal);
-        StartGame();
     }
-
-    void StartGame()
-    {
-        var playerCards = BuildDecks();
-        playerCards.Shuffle();
-        var rivalCards = BuildDecks();
-        rivalCards.Shuffle();
-
-        var local = new Player(playerHandDisplay, playerCards);
-        var rival = new Player(rivalHandDisplay, rivalCards);
-
-        local.Draw(4);
-        rival.Draw(4);
-    }
-
     public CardPile BuildDecks()
     {
         var cards = new CardPile();
@@ -79,7 +66,7 @@ public class PlayerManager : NetworkBehaviour
 
                 cardDisplay.SetCharacter(card as CharacterCard);
 
-                NetworkServer.Spawn(cardDisplay, connectionToClient);
+                NetworkServer.Spawn(cardDisplay.gameObject, connectionToClient);
             /*} else { card is AbilityCard) {
 
 

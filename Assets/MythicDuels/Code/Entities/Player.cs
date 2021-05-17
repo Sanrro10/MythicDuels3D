@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class Player : MonoBehaviour
+public class Player : NetworkBehaviour
 {
 
     private readonly HandDisplay handDisplay;
@@ -21,9 +22,10 @@ public class Player : MonoBehaviour
         hand = new CardPile();
         deck = cards;
         discard = new CardPile();
-    }
 
-    internal void Draw(int amount)
+    }
+    [Command]
+    internal void CmdDraw(int amount)
     {
         var drawnCards = deck.Pick(amount);
 
