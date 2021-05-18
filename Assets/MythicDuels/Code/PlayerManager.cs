@@ -3,83 +3,109 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class PlayerManager : NetworkBehaviour
+public class GameManager : NetworkBehaviour
 {
-    //public Mazo mazo;
+    [Header("Health")]
+    public int maxHealth = 30;
 
-    //// Estos Slots deberían ser una lista
-    //public GameObject deckGameObject;
+    [Header("Mana")]
+    public int maxMana = 10;
 
-    
-    //public GameObject characterSlot1; //Cambiar por un Vector3 y un Quaternion al saber que las posiciones son las correctas
-    //public GameObject characterSlot2;
-    //public GameObject characterSlot3;
-    //public GameObject characterSlot4;
-    //public GameObject characterSlot5;
+    [Header("Hand")]
+    public int handSize = 7;
+    public PlayerHand playerHand;
+    public PlayerHand enemyHand;
 
-    //private ArrayList characterHand;
-    //private ArrayList abilityHand;
+    [Header("Deck")]
+    public int deckSize = 30; // Maximum deck size
+    public int identicalCardCount = 2; // How many identical cards we allow to have in a deck
 
+    [Header("Battlefield")]
+    public PlayerField playerField;
+    public PlayerField enemyField;
 
-    [SerializeField]
-    private Card[] availableCards;
+    [Header("Turn Management")]
+    public GameObject endTurnButton;
+    [HideInInspector] public bool isOurTurn = false;
+    [SyncVar, HideInInspector] public int turnCount = 1; // Start at 1
 
-    [SerializeField]
-    private HandDisplay playerHandDisplay;
+    // isHovering is only set to true on the Client that called the OnCardHover function.
+    // We only want the hovering to appear on the enemy's Client, so we must exclude the OnCardHover caller from the Rpc call.
+    [HideInInspector] public bool isHovering = false;
+    [HideInInspector] public bool isHoveringField = false;
+    [HideInInspector] public bool isSpawning = false;
 
-    [SerializeField]
-    private HandDisplay rivalHandDisplay;
+    public SyncListPlayerInfo players = new SyncListPlayerInfo(); // Information of all players online. One is player, other is opponent.
 
-    [SerializeField]
-    private CharacterCardDisplay characterCardDisplayOriginal;
-
-    private CharacterCardFactory characterCardFactory;
-
-    [Client]
-    public override void OnStartClient()
+    // Not sent from Player / Object with Authority, so we need to ignoreAuthority. 
+    // We could also have this command run on the Player instead
+    [Command(ignoreAuthority = true)]
+    public void CmdOnCardHover(float moveBy, int index)
     {
-        base.OnStartClient();
-        var playerCards = BuildDecks();
-        playerCards.Shuffle();
-
-        Player player = new Player(playerHandDisplay, playerCards);
-
-        player.CmdDraw(4);
+        // Only move cards if there are any in our opponent's opponent's hand (our hand from our opponent's point of view).
+        if (enemyHand.handContent.transform.childCount > 0 && isServer) RpcCardHover(moveBy, index);
     }
 
-    [Server]
-    public override void OnStartServer()
+    [ClientRpc]
+    public void RpcCardHover(float moveBy, int index)
     {
-        base.OnStartServer();
-        characterCardFactory = new CharacterCardFactory(characterCardDisplayOriginal);
-    }
-    public CardPile BuildDecks()
-    {
-        var cards = new CardPile();
-
-        foreach (var card in availableCards)
+        // Only move card for the player that isn't currently hovering
+        if (!isHovering)
         {
-            //if (card is CharacterCard)
-            //{
-                var cardDisplay = characterCardFactory.Get(Vector3.zero, Quaternion.identity, card);
-                //CharacterCardDisplay cardDisplay = CharacterCardDisplay.Instantiate(characterCardDisplayOriginal, Vector3.zero, Quaternion.identity);
-
-                cardDisplay.SetCharacter(card as CharacterCard);
-
-                NetworkServer.Spawn(cardDisplay.gameObject, connectionToClient);
-            /*} else { card is AbilityCard) {
-
-
-            } */
-            cards.Add(cardDisplay);
+            HandCard card = enemyHand.handContent.transform.GetChild(index).GetComponent<HandCard>();
+            card.transform.localPosition = new Vector2(card.transform.localPosition.x, moveBy);
         }
-
-        return cards;
     }
 
-    // Update is called once per frame
-    void Update()
+    [Command(ignoreAuthority = true)]
+    public void CmdOnFieldCardHover(GameObject cardObject, bool activateShine, bool targeting)
     {
-        
+        /*
+        FieldCard card = cardObject.GetComponent<Card>();
+        card.shine.gameObject.SetActive(true);*/
+        if (isServer) RpcFieldCardHover(cardObject, activateShine, targeting);
+    }
+
+    [ClientRpc]
+    public void RpcFieldCardHover(GameObject cardObject, bool activateShine, bool targeting)
+    {
+        if (!isHoveringField)
+        {
+            FieldCard card = cardObject.GetComponent<FieldCard>();
+            Color shine = activateShine ? card.hoverColor : Color.clear;
+            card.shine.color = targeting ? card.targetColor : shine;
+            //card.shine.gameObject.SetActive(activateShine);
+        }
+    }
+
+    // Ends our turn and starts our opponent's turn.
+    [Command(ignoreAuthority = true)]
+    public void CmdEndTurn()
+    {
+        RpcSetTurn();
+    }
+
+    [ClientRpc]
+    public void RpcSetTurn()
+    {
+        // If isOurTurn was true, set it false. If it was false, set it true.
+        isOurTurn = !isOurTurn;
+        endTurnButton.SetActive(isOurTurn);
+
+        // If isOurTurn (after updating the bool above)
+        if (isOurTurn)
+        {
+            playerField.UpdateFieldCards();
+            Player.localPlayer.deck.CmdStartNewTurn();
+        }
+    }
+
+    public void StartGame()
+    {
+        endTurnButton.SetActive(true);
+        Player player = Player.localPlayer;
+        player.mana++;
+        player.currentMax++;
+        isOurTurn = true;
     }
 }
