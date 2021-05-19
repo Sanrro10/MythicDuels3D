@@ -30,21 +30,14 @@ public class CharacterCardDisplay : CardDisplay
     [SerializeField]
     private MinionDisplay minionDisplayOriginal;
 
-    private MinionFactory<MinionDisplay> minionFactory;
-
-    private void Awake()
-    {
-        minionFactory = new MinionFactory<MinionDisplay>(minionDisplayOriginal);
-    }
-
     [SerializeField]
     private AbilityDisplay[] abilities;
 
     // Use this for initialization
-    public void SetCharacter(CharacterCard card)
+    public void SetCharacter(CharacterCard card, int index, PlayerType playerT)
     {
 
-        SetCard(card);
+        SetCard(card, index, playerT);
 
         characterCard = card;
 
@@ -71,12 +64,11 @@ public class CharacterCardDisplay : CardDisplay
         }
     }
 
-    public void Play()
-    {
-        var cardDisplay = minionFactory.Get(Vector3.zero, Quaternion.identity, this);
-        Destroy(this);
+    //public override void Play()
+    //{
+      //  Destroy(this);
 
-    }
+//    }
 
     string GetValue(int value)
     {

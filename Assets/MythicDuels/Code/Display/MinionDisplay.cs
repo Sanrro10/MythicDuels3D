@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MinionDisplay : MonoBehaviour
+public class MinionDisplay : Entity
 {
     private CharacterCardDisplay characterCardDisplay;
 

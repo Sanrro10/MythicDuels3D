@@ -11,10 +11,6 @@ public class Player : Entity
 
     private readonly HandDisplay handDisplay;
 
-    public CardPile hand;
-
-    public CardPile graveyard;
-
     [Header("Player Info")]
     [SyncVar(hook = nameof(UpdatePlayerName))] public string username; // SyncVar hook to call a command whenever a username changes (like when players load in initially).
 
@@ -22,7 +18,7 @@ public class Player : Entity
     public Sprite portrait;
 
     [Header("Deck")]
-    public CardPile deck;
+    public Deck deck;
     public Sprite cardback;
 
     [Header("Stats")]
@@ -43,29 +39,6 @@ public class Player : Entity
     [HideInInspector] public static GameManager gameManager;
     [SyncVar, HideInInspector] public bool firstPlayer = false; // Is it player 1, player 2, etc.
 
-    public Player(HandDisplay handDisplay, CardPile cards)
-    {
-        this.handDisplay = handDisplay;
-
-        hand = new CardPile();
-        deck = cards;
-        graveyard = new CardPile();
-
-    }
-    [Command]
-    internal void CmdDraw(int amount)
-    {
-        var drawnCards = deck.Pick(amount);
-
-        AddCardsToHand(drawnCards);
-    }
-
-    private void AddCardsToHand(IEnumerable<CardDisplay> drawnCards)
-    {
-        hand.AddRange(drawnCards);
-
-        handDisplay.UpdateCards(hand);
-    }
     public override void OnStartLocalPlayer()
     {
         localPlayer = this;

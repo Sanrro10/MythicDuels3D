@@ -20,9 +20,9 @@ public class GameManager : NetworkBehaviour
     public int deckSize = 30; // Maximum deck size
     public int identicalCardCount = 2; // How many identical cards we allow to have in a deck
 
-    [Header("Battlefield")]
-    public PlayerField playerField;
-    public PlayerField enemyField;
+    //[Header("Battlefield")]
+    //public PlayerField playerField;
+    //public PlayerField enemyField;
 
     [Header("Turn Management")]
     public GameObject endTurnButton;
@@ -37,9 +37,10 @@ public class GameManager : NetworkBehaviour
 
     public SyncListPlayerInfo players = new SyncListPlayerInfo(); // Information of all players online. One is player, other is opponent.
 
-    // Not sent from Player / Object with Authority, so we need to ignoreAuthority. 
+    // Not sent from Player / Object with Authority, so we need to requiresAuthority = false. 
     // We could also have this command run on the Player instead
-    [Command(ignoreAuthority = true)]
+
+    [Command(requiresAuthority = false)]
     public void CmdOnCardHover(float moveBy, int index)
     {
         // Only move cards if there are any in our opponent's opponent's hand (our hand from our opponent's point of view).
@@ -52,12 +53,12 @@ public class GameManager : NetworkBehaviour
         // Only move card for the player that isn't currently hovering
         if (!isHovering)
         {
-            HandCard card = enemyHand.handContent.transform.GetChild(index).GetComponent<HandCard>();
+            CardDisplay card = enemyHand.handContent.transform.GetChild(index).GetComponent<CardDisplay>();
             card.transform.localPosition = new Vector2(card.transform.localPosition.x, moveBy);
         }
     }
 
-    [Command(ignoreAuthority = true)]
+    [Command(requiresAuthority = false)]
     public void CmdOnFieldCardHover(GameObject cardObject, bool activateShine, bool targeting)
     {
         /*
@@ -71,15 +72,14 @@ public class GameManager : NetworkBehaviour
     {
         if (!isHoveringField)
         {
-            FieldCard card = cardObject.GetComponent<FieldCard>();
-            Color shine = activateShine ? card.hoverColor : Color.clear;
-            card.shine.color = targeting ? card.targetColor : shine;
+            MinionDisplay card = cardObject.GetComponent<MinionDisplay>();
+            //Color shine = activateShine ? card.hoverColor : Color.clear;
+            //card.shine.color = targeting ? card.targetColor : shine;
             //card.shine.gameObject.SetActive(activateShine);
         }
     }
 
-    // Ends our turn and starts our opponent's turn.
-    [Command(ignoreAuthority = true)]
+    [Command(requiresAuthority = false)]
     public void CmdEndTurn()
     {
         RpcSetTurn();
@@ -88,14 +88,12 @@ public class GameManager : NetworkBehaviour
     [ClientRpc]
     public void RpcSetTurn()
     {
-        // If isOurTurn was true, set it false. If it was false, set it true.
         isOurTurn = !isOurTurn;
         endTurnButton.SetActive(isOurTurn);
 
-        // If isOurTurn (after updating the bool above)
         if (isOurTurn)
         {
-            playerField.UpdateFieldCards();
+            //playerField.UpdateFieldCards();
             Player.localPlayer.deck.CmdStartNewTurn();
         }
     }

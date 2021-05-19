@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Collider))]
-public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class CardMove : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
 
     // IBeginDragHandler, IEndDragHandler, IDragHandler
@@ -28,16 +28,34 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     private Vector3 position;
     private Quaternion rotation;
 
+
+    [Header("Card Properties")]
+    public CardDisplay card;
+    public CanvasGroup canvasGroup;
+
+    [Header("Card Hover")]
+    public bool canHover = false; // Hover and Drag are false by default and set to true when the card is instantiated.
+
+    [Header("Card Drag")]
+    public bool canDrag = false;
+    public GameObject EmptyCard; // Used for creating an empty placeholder card where our current card used to be.
+    private GameObject temp;
+
     private void Start()
     {
         //card = this.gameObject;
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (!canDrag) return;
         if (!isEnabled)
         {
             return;
         }
+        temp = Instantiate(EmptyCard);
+        temp.transform.SetParent(this.transform.parent, false);
+
+        temp.transform.SetSiblingIndex(transform.GetSiblingIndex());
         position = transform.position;
         rotation = transform.rotation;
         isDragging = true;
@@ -45,6 +63,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (!canDrag) return;
         if (!isEnabled || !isDragging)
         {
             return;
@@ -70,6 +89,7 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     }
     public void OnDrag(PointerEventData eventData)
     {
+        if (!canDrag) return;
         if (!isDragging)
         {
             return;
@@ -95,4 +115,32 @@ public class CardMove : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         }
     }
 
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        // If we can't hover, return.
+        if (!canHover) return;
+
+        // Move card locally
+        card.transform.localScale = new Vector2(0.8f, 0.8f);
+        card.transform.localPosition = new Vector2(card.transform.localPosition.x, 190);
+        int index = card.transform.GetSiblingIndex();
+
+        // Move corresponding card on opponent's screen
+        Player.gameManager.isHovering = true;
+        Player.gameManager.CmdOnCardHover(-25, index);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (!canHover) return;
+
+        // Return to normal
+        card.transform.localScale = new Vector2(0.5f, 0.5f);
+        card.transform.localPosition = new Vector2(card.transform.localPosition.x, 0);
+        int index = card.handIndex;
+
+        // Move corresponding card back to normal on opponent's screen
+        Player.gameManager.CmdOnCardHover(0, index);
+        Player.gameManager.isHovering = false;
+    }
 }

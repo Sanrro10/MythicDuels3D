@@ -33,9 +33,9 @@ public partial struct PlayerInfo
     public Sprite cardback => data.cardback;
 
     // Card count for UI
-    public int handCount => data.deck.Count;
-    public int deckCount => data.hand.Count;
-    public int graveCount => data.graveyard.Count;
+    public int handCount => data.deck.hand.Count;
+    public int deckCount => data.deck.deckList.Count;
+    public int graveCount => data.deck.graveyard.Count;
 }
 
 // Card List
