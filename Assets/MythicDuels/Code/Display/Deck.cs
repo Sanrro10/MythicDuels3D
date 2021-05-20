@@ -74,11 +74,7 @@ public class Deck : NetworkBehaviour
         GameObject boardCard = Instantiate(character.minionPrefab.gameObject);
         MinionDisplay newCard = boardCard.GetComponent<MinionDisplay>();
         newCard.card = new CardInfo(card.data); // Save Card Info so we can re-access it later if we need to.
-        newCard.cardName.text = card.name;
-        newCard.health = character.health;
-        newCard.strength = character.strength;
-        newCard.image.sprite = card.image;
-        newCard.image.color = Color.white;
+        newCard.SetMinion(character);
 
         // Update the Card Info that appears when hovering
         newCard.cardHover.UpdateFieldCardInfo(card);

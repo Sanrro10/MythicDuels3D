@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Mirror;
 
 public class MinionDisplay : Entity
 {
-    private CharacterCardDisplay characterCardDisplay;
+    [SyncVar, HideInInspector] public CardInfo card;
 
     // Si marcas las variables con el atributo SerializeField,
     // puedes establecerlas en el inspector si necesidad de hacerlas públicas
-
+    public Image image;
     [SerializeField]
     private Text healthText;
     [SerializeField]
@@ -20,6 +21,8 @@ public class MinionDisplay : Entity
     private Text armorClassText;
     [SerializeField]
     public SpriteRenderer weapon;
+    [SerializeField]
+    public CharacterCardDisplay CharacterCardDisplayPrefab;
     private bool isStrengh;
     private bool hasReaction;
     private int range;
@@ -29,52 +32,56 @@ public class MinionDisplay : Entity
     private int mana;
     private int clasS;
 
+    [Header("Card Hover")]
+    public CharacterCardDisplay cardHover;
+
 
 
     // Use this for initialization
-    public void SetMinion(CharacterCardDisplay card)
+    public void SetMinion(CharacterCard card)
     {
-        characterCardDisplay = card;
-        health = card.characterCard.constitution * card.characterCard.level;
+        health = card.constitution * card.level;
         healthText.text = health.ToString();
         hasReaction = true;
+        cardHover = Instantiate(CharacterCardDisplayPrefab);
+        cardHover.SetCharacter()
         //range = card.characterCard.range;
         //rangeText.text = range.ToString();
-        if(card.characterCard.dexterity + 2 > card.characterCard.strength)
+        if(card.dexterity + 2 > card.strength)
         {
             isStrengh = false;
             //attackType.text = "DEX";
             if(range == 1)
             {
-                attack = (int)((4 + card.characterCard.dexterity) * card.characterCard.level*0.8);
+                attack = (int)((4 + card.dexterity) * card.level*0.8);
             }
             else
             {
-                attack = 3 + card.characterCard.dexterity;
+                attack = 3 + card.dexterity;
             }
             
         }
         //classText.text = card.classText.text;
-        clasS = card.characterCard.clasS;
+        clasS = card.clasS;
         if (clasS == 0 | clasS == 4 | clasS == 5 | clasS == 8) //Clases sin maná
         {
-            mana = card.characterCard.level * 0;
+            mana = card.level * 0;
         }
         else
         {
             if (clasS == 7) //Mana de Ranger
             {
-                mana = card.characterCard.level * 2;
+                mana = card.level * 2;
             }
             else
             {
                 if (clasS == 10) //mana de wizard
                 {
-                    mana = card.characterCard.level * 4;
+                    mana = card.level * 4;
                 }
                 else //clases con bastante maná pero no como wizard
                 {
-                    mana = card.characterCard.level * 3;
+                    mana = card.level * 3;
                 }
             }
         }
@@ -83,6 +90,31 @@ public class MinionDisplay : Entity
         manaText.text = mana.ToString();
 
         
+    }
+    public override void Update()
+    {
+        base.Update();
+        // If we have a card but no sprite, make sure the sprite is up to date since we can't SyncVar the sprite.
+        // Useful to avoid bugs when a player was offline when the card spawned, or if they reconnected.
+        if (image.sprite == null)
+        {
+            image.sprite = card.image;
+
+            // Update card hover info
+            cardHover.UpdateFieldCardInfo(card);
+        }
+
+        SetMinion(cardHover.characterCard);
+
+        if (CanAttack()) attackText.color = Color.green;
+        else if (CantAttack()) attackText.color = Color.white;
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdUpdateWaitTurn()
+    {
+        Debug.LogError("Here");
+        if (waitTurn > 0) waitTurn--;
     }
 
 }
